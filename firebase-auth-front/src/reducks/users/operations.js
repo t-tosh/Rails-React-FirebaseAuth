@@ -1,6 +1,6 @@
 import { signInAction, signOutAction } from "./actions";
 import { push } from "connected-react-router";
-import { auth } from "../../Firebase";
+import { auth, provider } from "../../Firebase";
 import axios from "axios";
 
 export const listenAuthState = () => {
@@ -48,6 +48,33 @@ export const signIn = (email, password) => {
 
         dispatch(push("/"));
       }
+    });
+  };
+};
+
+export const googleSignIn = () => {
+  return async (dispatch) => {
+    return auth.signInWithPopup(provider).then(async (result) => {
+      const user = result.user;
+      const uid = user.uid;
+      const email = user.email;
+      const isNewUser = result.additionalUserInfo.isNewUser;
+
+      if (isNewUser) {
+        const token = await user.getIdToken(true);
+        const config = { headers: { authorization: `Bearer ${token}` } };
+        try {
+          await axios.post(
+            "http://localhost:3001/api/v1/users/new",
+            { email: email },
+            config
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      dispatch(push("/"));
     });
   };
 };

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { PrimaryButton, TextInput } from "../compenents/UIkit";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
-import { signIn } from "../reducks/users/operations";
+import { signIn, googleSignIn } from "../reducks/users/operations";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -50,6 +50,14 @@ const SignIn = () => {
         label={"サインイン"}
         onClick={() => {
           dispatch(signIn(email, password));
+          dispatch(push("/"));
+        }}
+      />
+      <h2>Googleでサインイン</h2>
+      <PrimaryButton
+        label={"サインイン"}
+        onClick={() => {
+          dispatch(googleSignIn());
           dispatch(push("/"));
         }}
       />
