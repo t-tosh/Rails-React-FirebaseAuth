@@ -22,6 +22,18 @@ export const googleSignInAction = (userState) => {
   };
 };
 
+export const TWITTER_SIGN_IN = "TWITTER_SIGN_IN";
+export const twitterSignInAction = (userState) => {
+  return {
+    type: "TWITTER_SIGN_IN",
+    payload: {
+      isSignedIn: true,
+      uid: userState.uid,
+      email: userState.email,
+    },
+  };
+};
+
 export const SIGN_OUT = "SIGN_OUT";
 export const signOutAction = () => {
   return {
